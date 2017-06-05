@@ -114,7 +114,12 @@ public class CarDetailsActivity extends BaseMvpActivity<ICarDetailActivityView, 
 
     @Override
     protected void setListener() {
-
+        mFaceIm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DriverDetailsActivity.actionStart(CarDetailsActivity.this,carId);
+            }
+        });
     }
 
     @OnClick({R.id.ll_back, R.id.face_im, R.id.makePhoneCall_btn, R.id.sendMessage_btn})

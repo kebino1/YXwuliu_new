@@ -18,7 +18,7 @@ import eo.cn.yxwuliu.widgets.RoundImageView;
  * @time 2017/5/31  11:55
  * @desc ${TODD}
  */
-public class TypeItemHomeHolder extends TypeBaseViewHolder<GoodsBean.DataBean> implements View.OnClickListener {
+public class TypeItemHomeHolder extends TypeBaseViewHolder<GoodsBean.DataBean>{
 
     private LinearLayout mTurnLL;
     private TextView mBookTv;
@@ -55,10 +55,10 @@ public class TypeItemHomeHolder extends TypeBaseViewHolder<GoodsBean.DataBean> i
         mSecondLL = (LinearLayout) itemView.findViewById(R.id.second_ll);
         mTurnLL = (LinearLayout) itemView.findViewById(R.id.turn_ll);
         mBookTv = (TextView) itemView.findViewById(R.id.book_tv);
-
-        mSecondLL.setOnClickListener(this);
-        mTurnLL.setOnClickListener(this);
-        mBookTv.setOnClickListener(this);
+//
+//        mSecondLL.setOnClickListener(this);
+//        mTurnLL.setOnClickListener(this);
+//        mBookTv.setOnClickListener(this);
 
     }
 
@@ -83,26 +83,26 @@ public class TypeItemHomeHolder extends TypeBaseViewHolder<GoodsBean.DataBean> i
         this.mDataBean = dataBean;
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.second_ll:
-                //跳转到首页详情
-                Intent intent = new Intent(mContext, ListDetailActivity.class);
-                intent.putExtra("data", mDataBean);
-                mContext.startActivity(intent);
-//                ActivityUtil.StartActivity(mContext, MyOrderGoodsDetailActivity.class, false);
-                break;
-            case R.id.turn_ll:
-                //转发
-                break;
-            case R.id.book_tv:
-                //接单
-                OrderDialog dialog = new OrderDialog(mContext,mDataBean);
-                dialog.show();
-                break;
-            case R.id.face_im:
-                //图片
-        }
-    }
+//    @Override
+//    public void onClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.second_ll:
+//                //跳转到首页详情
+//                Intent intent = new Intent(mContext, ListDetailActivity.class);
+//                intent.putExtra("data", mDataBean);
+//                mContext.startActivity(intent);
+////                ActivityUtil.StartActivity(mContext, MyOrderGoodsDetailActivity.class, false);
+//                break;
+//            case R.id.turn_ll:
+//                //转发
+//                break;
+//            case R.id.book_tv:
+//                //接单
+//                OrderDialog dialog = new OrderDialog(mContext,mDataBean);
+//                dialog.show();
+//                break;
+//            case R.id.face_im:
+//                //图片
+//        }
+//    }
 }

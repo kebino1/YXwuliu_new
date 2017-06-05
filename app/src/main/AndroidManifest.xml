@@ -30,6 +30,7 @@
         <activity android:name=".activity.DetailYunDan" android:launchMode="singleTop"/>
         <activity android:name=".activity.DetailYunJia" android:launchMode="singleTop"/>
         <activity android:name=".activity.ListDetailActivity" android:launchMode="singleTop"/>
+        <activity android:name=".activity.DriverDetailsActivity" android:launchMode="singleTop"/>
     </application>
 
 </manifest>

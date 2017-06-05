@@ -1,7 +1,9 @@
 package eo.cn.yxwuliu.fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import eo.cn.yxwuliu.R;
 import eo.cn.yxwuliu.activity.CarDetailsActivity;
+import eo.cn.yxwuliu.activity.DriverDetailsActivity;
 import eo.cn.yxwuliu.adapter.SearchCarAdapter;
 import eo.cn.yxwuliu.base.BaseMvpFragment;
 import eo.cn.yxwuliu.bean.GoodsBean;
@@ -79,7 +82,7 @@ public class FragmentNearCar extends BaseMvpFragment<ICarSourceView, CarSourcePr
         searchCarAdapter.setOnClickListener(new SearchCarAdapter.OnCarIcoClickListener() {
             @Override
             public void icoClick(View view, int position) {
-
+                DriverDetailsActivity.actionStart(getActivity(),position+"");
             }
         });
 
@@ -95,7 +98,21 @@ public class FragmentNearCar extends BaseMvpFragment<ICarSourceView, CarSourcePr
         searchCarAdapter.setOnClickListener(new SearchCarAdapter.OnCarBookClickListener() {
             @Override
             public void bookClick(View view, int position) {
-
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("联系车主")
+                        .setPositiveButton("打电话", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getActivity(), "拨打xxxx电话", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("发短信", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getActivity(), "向xxxx发短信", Toast.LENGTH_SHORT).show();
+                            }
+                        }).create()
+                        .show();
             }
         });
 

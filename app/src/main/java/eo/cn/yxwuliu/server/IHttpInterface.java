@@ -33,6 +33,14 @@ public interface IHttpInterface {
     Observable<GoodsBean> getCarSource(
             @Query("num") String num,@Query("page") String page);
 
+    /**
+     * 获取车主信息
+     * @return
+     */
+    @GET(Api.GOODS_URL)//暂时使用货源接口来测试
+    Observable<GoodsBean> getDriver(
+            @Query("num") String num,@Query("page") String page);
+
     // 轮播图(焦点图)
     @GET("feng/imglst")
     Observable<BannerResult> getBannerView();

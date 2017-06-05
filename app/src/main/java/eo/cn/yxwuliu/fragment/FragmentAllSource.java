@@ -1,5 +1,6 @@
 package eo.cn.yxwuliu.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import eo.cn.yxwuliu.R;
+import eo.cn.yxwuliu.activity.DriverDetailsActivity;
+import eo.cn.yxwuliu.activity.ListDetailActivity;
 import eo.cn.yxwuliu.adapter.SearchGoodsAdapter;
 import eo.cn.yxwuliu.base.BaseMvpFragment;
 import eo.cn.yxwuliu.bean.GoodsBean;
@@ -30,6 +33,7 @@ import eo.cn.yxwuliu.presenter.GoodSourcePresenter;
 import eo.cn.yxwuliu.util.CitySeclectUtil;
 import eo.cn.yxwuliu.util.CustomProgressDialog;
 import eo.cn.yxwuliu.view.IGoodSourceView;
+import eo.cn.yxwuliu.widgets.OrderDialog;
 
 /**
  * 这个是全部货源
@@ -101,6 +105,32 @@ public class FragmentAllSource extends BaseMvpFragment<IGoodSourceView, GoodSour
     protected void setListener() {
         startSearchContent.setOnClickListener(this);
         endSearchContent.setOnClickListener(this);
+
+        //点击货源车源的监听事件
+        //点击头像时
+        searchGoodsAdapter.setOnClickListener(new SearchGoodsAdapter.OnGoodIcoClickListener() {
+            @Override
+            public void icoClick(View view, int position) {
+                DriverDetailsActivity.actionStart(getActivity(),position+"");//暂时使用车主详情代替货主
+            }
+        });
+        //点击item简介时
+        searchGoodsAdapter.setOnClickListener(new SearchGoodsAdapter.OnGoodItemClickListener() {
+            @Override
+            public void itemClick(View view, int position) {
+                Intent intent = new Intent(getActivity(), ListDetailActivity.class);
+                intent.putExtra("data", goodsBeenes.get(position));
+                getActivity().startActivity(intent);
+            }
+        });
+        //点击接单时
+        searchGoodsAdapter.setOnClickListener(new SearchGoodsAdapter.OnGoodBookClickListener() {
+            @Override
+            public void bookClick(View view, int position) {
+                OrderDialog dialog = new OrderDialog(getActivity(), goodsBeenes.get(position));
+                dialog.show();
+            }
+        });
 
         //这个是上拉和下拉的监听事件
         mRecyclerGoodes.setLoadingListener(new XRecyclerView.LoadingListener() {

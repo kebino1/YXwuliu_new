@@ -28,9 +28,11 @@ import eo.cn.yxwuliu.activity.DetailDeliverCar;
 import eo.cn.yxwuliu.activity.DetailDeliverGoods;
 import eo.cn.yxwuliu.activity.DetailYunDan;
 import eo.cn.yxwuliu.activity.DetailYunJia;
+import eo.cn.yxwuliu.activity.DriverDetailsActivity;
+import eo.cn.yxwuliu.activity.ListDetailActivity;
 import eo.cn.yxwuliu.activity.MsgActivity;
-import eo.cn.yxwuliu.adapter.HomeAdapter;
 import eo.cn.yxwuliu.adapter.ImagePagerAdapter;
+import eo.cn.yxwuliu.adapter.SearchGoodsAdapter;
 import eo.cn.yxwuliu.api.NetWorkConst;
 import eo.cn.yxwuliu.base.BaseMvpFragment;
 import eo.cn.yxwuliu.bean.BannerResult;
@@ -38,6 +40,7 @@ import eo.cn.yxwuliu.bean.GoodsBean;
 import eo.cn.yxwuliu.presenter.HomeProductPresenter;
 import eo.cn.yxwuliu.util.ActivityUtil;
 import eo.cn.yxwuliu.view.IHomeFragmentView;
+import eo.cn.yxwuliu.widgets.OrderDialog;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -66,7 +69,7 @@ public class HomeFragment extends BaseMvpFragment<IHomeFragmentView, HomeProduct
     private View mHeadView;
     private AutoScrollViewPager viewPager;
     private ArrayList<Object> mBannerViewList;
-    private HomeAdapter mHomeAdapter;
+    private SearchGoodsAdapter mSearchGoodsAdapter;
     private List<GoodsBean.DataBean> mDatas = new ArrayList<GoodsBean.DataBean>();
 
     public static HomeFragment newInstance() {
@@ -99,7 +102,7 @@ public class HomeFragment extends BaseMvpFragment<IHomeFragmentView, HomeProduct
         presenter.getListData();
 
         //
-        mHomeAdapter = new HomeAdapter(getContext(), mDatas);
+        mSearchGoodsAdapter = new SearchGoodsAdapter(mDatas,getContext());
     }
 
     @Override
@@ -155,7 +158,7 @@ public class HomeFragment extends BaseMvpFragment<IHomeFragmentView, HomeProduct
         });
 
         //RecycleView的适配器
-        mXRecyclerView.setAdapter(mHomeAdapter);
+        mXRecyclerView.setAdapter(mSearchGoodsAdapter);
 
         //定位的点击事件
         mLocationImg.setOnClickListener(new View.OnClickListener() {
@@ -202,7 +205,31 @@ public class HomeFragment extends BaseMvpFragment<IHomeFragmentView, HomeProduct
             }
         });
 
-
+        //点击货源车源的监听事件
+        //点击头像时
+        mSearchGoodsAdapter.setOnClickListener(new SearchGoodsAdapter.OnGoodIcoClickListener() {
+            @Override
+            public void icoClick(View view, int position) {
+                DriverDetailsActivity.actionStart(getActivity(),position+"");//暂时使用车主详情代替货主
+            }
+        });
+        //点击item简介时
+        mSearchGoodsAdapter.setOnClickListener(new SearchGoodsAdapter.OnGoodItemClickListener() {
+            @Override
+            public void itemClick(View view, int position) {
+                Intent intent = new Intent(getActivity(), ListDetailActivity.class);
+                intent.putExtra("data", mDatas.get(position));
+                getActivity().startActivity(intent);
+            }
+        });
+        //点击接单时
+        mSearchGoodsAdapter.setOnClickListener(new SearchGoodsAdapter.OnGoodBookClickListener() {
+            @Override
+            public void bookClick(View view, int position) {
+                OrderDialog dialog = new OrderDialog(getActivity(), mDatas.get(position));
+                dialog.show();
+            }
+        });
     }
 
     //重写onActivityResult方法
@@ -256,8 +283,8 @@ public class HomeFragment extends BaseMvpFragment<IHomeFragmentView, HomeProduct
     public void showListData(GoodsBean goodsBean) {
         //        mDatas.clear();
         mDatas.addAll(goodsBean.getData());
-        mHomeAdapter = new HomeAdapter(getContext(), mDatas);
-        mHomeAdapter.notifyDataSetChanged();
+        mSearchGoodsAdapter = new SearchGoodsAdapter(mDatas, getContext());
+        mSearchGoodsAdapter.notifyDataSetChanged();
 
     }
 
@@ -268,8 +295,8 @@ public class HomeFragment extends BaseMvpFragment<IHomeFragmentView, HomeProduct
             mXRecyclerView.setNoMore(true);
         } else {
             this.mDatas.addAll(goodsBean.getData());
-            mHomeAdapter = new HomeAdapter(getContext(), mDatas);
-            mHomeAdapter.notifyDataSetChanged();
+            mSearchGoodsAdapter = new SearchGoodsAdapter(mDatas, getContext());
+            mSearchGoodsAdapter.notifyDataSetChanged();
             mXRecyclerView.loadMoreComplete();
         }
     }
